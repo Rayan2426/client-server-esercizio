@@ -13,25 +13,32 @@ public class App
         try {
             System.out.println("SERVER AVVIATO");
             ServerSocket server = new ServerSocket(3000);
+            while(true){
+                Socket s = server.accept();
             
-            Socket s = server.accept();
+                System.out.println("Un client si è connesso");
+                
+                DataOutputStream out = new DataOutputStream(s.getOutputStream());
+                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+    
+                System.out.println("CREATI STREAM DI INPUT E OUTPUT");
+                
+                String stringa = in.readLine();
+                System.out.println("STRINGA LETTA: " + stringa + "\nINVIATA DA: " + s.getInetAddress());
+    
+                if(stringa.equals("closeserver")){
+                    System.out.println("SERVER TERMINATO");
+                    out.writeBytes("closed");
+                    s.close();
+                    break;
+                }
+                stringa = stringa.toUpperCase();
+    
+                out.writeBytes(stringa + "\n");
+                System.out.println("STRINGA MODIFICATA INVIATA");
             
-            System.out.println("Un client si è connesso");
-            
-            DataOutputStream out = new DataOutputStream(s.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-
-            System.out.println("CREATI STREAM DI INPUT E OUTPUT");
-            
-            String stringa = in.readLine();
-            System.out.println("STRINGA LETTA: " + stringa + "\nINVIATA DA: " + s.getInetAddress());
-
-
-            stringa = stringa.toUpperCase();
-
-            out.writeBytes(stringa + "\n");
-            System.out.println("STRINGA MODIFICATA INVIATA");
-            
+            }
+          
             server.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
