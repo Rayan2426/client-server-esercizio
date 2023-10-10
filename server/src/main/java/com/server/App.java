@@ -24,7 +24,7 @@ public class App
             System.out.println("CREATI STREAM DI INPUT E OUTPUT");
             
             String stringa = in.readLine();
-            System.out.println("STRINGA LETTA: " + stringa);
+            System.out.println("STRINGA LETTA: " + stringa + "\nINVIATA DA: " + s.getInetAddress());
 
 
             stringa = stringa.toUpperCase();
