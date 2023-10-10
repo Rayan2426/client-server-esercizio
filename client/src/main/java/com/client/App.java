@@ -10,7 +10,9 @@ public class App
     public static void main( String[] args )
     {
         try {
-            Socket mySocket = new Socket("10.22.9.6", 3000);
+            //the value of the ip string is the ip of the server you want to connect to
+            String ip = "localhost";
+            Socket mySocket = new Socket(ip, 3000);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
             DataOutputStream out = new DataOutputStream(mySocket.getOutputStream());
