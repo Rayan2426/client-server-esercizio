@@ -13,6 +13,8 @@ public class App
         try {
             System.out.println("SERVER AVVIATO");
             ServerSocket server = new ServerSocket(3000);
+            int cont = 0;
+            int rnd = -1;
             while(true){
                 Socket s = server.accept();
             
@@ -32,10 +34,32 @@ public class App
                     s.close();
                     break;
                 }
-                stringa = stringa.toUpperCase();
-    
-                out.writeBytes(stringa + "\n");
-                System.out.println("STRINGA MODIFICATA INVIATA");
+                int n;
+                try {
+                    n = Integer.parseInt(stringa);
+                } catch (Exception e) {
+                    out.writeBytes(e.getMessage());
+                    continue;
+                }
+                
+                if(cont == 0)
+                    rnd = (int)(Math.random()*10);
+
+                System.out.println("random is " + rnd);
+
+                cont++;
+
+                if(n < rnd){
+                    out.writeBytes("1\n");
+                }
+                else if(n > rnd){
+                    out.writeBytes("2\n");
+                }
+                else if(n == rnd){
+                    out.writeBytes("3#" + cont + "\n");
+                    out.writeBytes(cont + "\n");
+                    cont = 0;
+                }
             
             }
           

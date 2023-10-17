@@ -31,51 +31,64 @@ public class App
         mates.put("skorz","10.22.9.17");
         mates.put("aldi","10.22.9.18");
         mates.put("local","localhost");
+        mates.put("/change","change");
         mates.put("close","close");
 
+
+        //the value of the ip string is the ip of the server you want to connect to
         String ip = mates.get("local");
+        String inp = "local";
 
         Scanner input = new Scanner(System.in);
 
         while (!ip.equals(mates.get("close"))) {
             
             try {
+                if(inp.equals("/change")){
 
-                System.out.println("A CHI INVIARE MESSAGGIO?\n");
+                    System.out.println("A CHI INVIARE MESSAGGIO?\n");
+                    inp = input.nextLine();
 
-                //the value of the ip string is the ip of the server you want to connect to
+                    if(!mates.containsKey(inp)){
+                        inp = "local";
+                        continue;
+                    }
+
+                    if(ip.equals("close"))
+                        break;
+                    
+
+                    ip = mates.get(inp);
+                }
+
+                System.out.println("MESSAGGIO DA INVIARE A " + inp + " ( "+ ip +"):\n");
+
                 String str = input.nextLine();
 
-                if(!mates.containsKey(str))
-                    continue;
 
-                if(ip.equals("close"))
-                    break;
+                if(!str.equals("/change")){
 
-                ip = mates.get(str);
+                    Socket mySocket = new Socket(ip, 3000);
 
-                System.out.println("MESSAGGIO DA INVIARE A " + str + " ( "+ ip +"): ");
+                    BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
+                    DataOutputStream out = new DataOutputStream(mySocket.getOutputStream());
 
-                str = input.nextLine();
+                    out.writeBytes(str+"\n");
+                    System.out.println("STRINGA INVIATA\n");
 
-                Socket mySocket = new Socket(ip, 3000);
+                    String response = in.readLine();
+                    System.out.println("STRING RICEVUTA: \n" + response);
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-                DataOutputStream out = new DataOutputStream(mySocket.getOutputStream());
-
-                out.writeBytes(str+"\n");
-                System.out.println("STRINGA INVIATA");
-
-                String response = in.readLine();
-                System.out.println("STRINGA MODIFICATA RICEVUTA: " + response);
-
-                System.out.println(response);
-
-                mySocket.close();
+                    mySocket.close();
+                }
+                else{
+                    inp = "/change";
+                }
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                System.out.println("ERRORE IN CLIENT");
+                inp = "/change";
+                System.out.println("ERRORE IN CLIENT\n");
             }
         }
         input.close();
