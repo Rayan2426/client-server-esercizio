@@ -57,7 +57,6 @@ public class App
                 }
                 else if(n == rnd){
                     out.writeBytes("3#" + cont + "\n");
-                    out.writeBytes(cont + "\n");
                     cont = 0;
                 }
             

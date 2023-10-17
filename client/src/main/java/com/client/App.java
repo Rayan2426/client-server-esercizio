@@ -77,7 +77,16 @@ public class App
                     System.out.println("STRINGA INVIATA\n");
 
                     String response = in.readLine();
-                    System.out.println("STRING RICEVUTA: \n" + response);
+                    if(response.equals("1")){
+                        System.out.println("numero troppo piccolo");
+                    }
+                    else if(response.equals("2")){
+                        System.out.println("numero troppo grande");
+                    }
+                    else{
+                        String ind[] = response.split("#");
+                        System.out.println("HAIN INDOVINATO IN " + ind[1] + " TENTATIVI");
+                    }
 
                     mySocket.close();
                 }
